@@ -26,6 +26,7 @@ tf
 sensor_msgs
 dynamic_reconfigure
 message_generation
+rosbag
 )
 
 find_package(OpenCV 4.0 QUIET)
@@ -84,6 +85,7 @@ include_directories(
 ${PROJECT_SOURCE_DIR}/orb_slam2
 ${PROJECT_SOURCE_DIR}/orb_slam2/include
 ${PROJECT_SOURCE_DIR}/ros/include
+${PROJECT_SOURCE_DIR}/ros/include/tools
 ${EIGEN3_INCLUDE_DIR}
 ${catkin_INCLUDE_DIRS}
 )
@@ -118,7 +120,7 @@ target_link_libraries(${PROJECT_NAME}
 ${LIBS_ORBSLAM}
 )
 
-# map serialization addition - library boost serialization 
+# map serialization addition - library boost serialization
 message(STATUS "Compile With map save/load function")
 find_library(BOOST_SERIALIZATION boost_serialization)
 if (NOT BOOST_SERIALIZATION)
@@ -156,7 +158,17 @@ target_link_libraries(${PROJECT_NAME}_rgbd
 ${LIBS_ROS}
 )
 
+add_executable (${PROJECT_NAME}_trainer
+ros/tools/TrainerNode.cc
+)
+add_dependencies (${PROJECT_NAME}_trainer ${PROJECT_NAME})
+
+target_link_libraries(${PROJECT_NAME}_trainer
+${LIBS_ROS}
+)
+
 install(TARGETS ${PROJECT_NAME}_mono ${PROJECT_NAME}_stereo ${PROJECT_NAME}_rgbd
+                ${PROJECT_NAME}_trainer
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
