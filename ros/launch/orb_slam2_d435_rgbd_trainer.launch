@@ -1,0 +1,16 @@
+<launch>
+  <node name="orb_slam2_rgbd_trainer" pkg="orb_slam2_ros"
+      type="orb_slam2_ros_trainer" output="screen">
+
+       <remap from="~/status_gba" to="/orb_slam2_rgbd/gba_running" />
+
+       <!-- static parameters -->
+       <param name="do_reverse_video" type="bool" value="true" />
+       <param name="training_loops" type="int" value="5" />
+       <param name="video_rosbag_name" type="string" value="video.bag" />
+       <param name="color_image_topic_name" type="string" value="/camera/color/image_raw" />
+       <param name="depth_image_topic_name" type="string" value="/camera/depth/image_rect_raw" />
+       <param name="map_file_name" type="string" value="orb_map_trained.bin" />
+
+  </node>
+</launch>
